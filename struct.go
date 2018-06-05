@@ -40,6 +40,15 @@ func (s *Struct) Data() []byte {
 	return s.data
 }
 
+func (s *Struct) Clone() *Struct {
+	clone := &Struct{
+		Template: s.Template,
+		data:     make([]byte, s.Template.size),
+	}
+	copy(clone.data, s.data)
+	return clone
+}
+
 // Lookup method of Struct returns the value if the field indicated by
 // fieldName. A clone of the field is returned so modifying the returned value
 // does not impact the Struct. For modifying the Struct object use the Update

@@ -185,6 +185,25 @@ var _ = Describe("Struct", func() {
 				Expect(s.Data()).To(Equal(data))
 			})
 		})
+		Describe("Clone method", func() {
+			var clone *Struct
+
+			BeforeEach(func() {
+				clone = s.Clone()
+			})
+			It("should create a struct with the same Template", func() {
+				Expect(s.Template.Equal(clone.Template)).To(BeTrue())
+			})
+			It("should create a struct with the same data", func() {
+				Expect(s.data).To(Equal(clone.data))
+			})
+			It("should create a struct with cloned data", func() {
+				s.data[0] = 0
+				clone.data[0] = 42
+				Expect(s.data[0]).To(Equal(byte(0)))
+				Expect(clone.data[0]).To(Equal(byte(42)))
+			})
+		})
 		Describe("Lookup operation", func() {
 
 			Context("for non-existing key", func() {
@@ -199,11 +218,9 @@ var _ = Describe("Struct", func() {
 					Expect(s.Lookup("field1")).To(Equal(Value([]byte{2, 3, 4, 5, 6, 7, 8, 9})))
 				})
 				It("should return a cloned value", func() {
-					Expect(func() []byte {
-						v := s.Lookup("field1")
-						v[0] = 4
-						return data
-					}()).To(Equal([]byte{
+					v := s.Lookup("field1")
+					v[0] = 4
+					Expect(data).To(Equal([]byte{
 						0, 1, 2, 3, 4, 5, 6, 7,
 						8, 9, 10, 11, 12, 13, 14, 15,
 						16, 17, 18, 19,
@@ -244,10 +261,8 @@ var _ = Describe("Struct", func() {
 			})
 			Context("with a proper key and value", func() {
 				It("shall change the data", func() {
-					Expect(func() []byte {
-						s.Update("field1", v)
-						return data
-					}()).To(Equal([]byte{
+					s.Update("field1", v)
+					Expect(data).To(Equal([]byte{
 						0, 1, 0, 1, 2, 3, 4, 5,
 						6, 7, 10, 11, 12, 13, 14, 15,
 						16, 17, 18, 19,
