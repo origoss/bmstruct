@@ -48,6 +48,11 @@ func PtrToBytes(v []byte) Value {
 	return Pointer(unsafe.Pointer(&v[0]))
 }
 
+// TODO: Pointer naming is not symmetrical
+func (v Value) Pointer() unsafe.Pointer {
+	return unsafe.Pointer(&v[0])
+}
+
 func (v Value) Uint8() uint8 {
 	var i uint8
 	t := reflect.TypeOf(i)
