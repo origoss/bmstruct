@@ -5,8 +5,8 @@ import (
 )
 
 type Template struct {
-	fields map[string]*Field
-	size   int
+	Fields map[string]*Field
+	Size   int
 }
 
 func NewTemplate(size int, fields ...*Field) *Template {
@@ -14,11 +14,11 @@ func NewTemplate(size int, fields ...*Field) *Template {
 		panic("size shall be greater than 0")
 	}
 	t := &Template{
-		fields: make(map[string]*Field),
-		size:   size,
+		Fields: make(map[string]*Field),
+		Size:   size,
 	}
 	for _, field := range fields {
-		t.fields[field.Name] = field
+		t.Fields[field.Name] = field
 	}
 	if t.minLen() > uint64(size) {
 		panic("Template size too small")
@@ -28,7 +28,7 @@ func NewTemplate(size int, fields ...*Field) *Template {
 
 func (t *Template) minLen() uint64 {
 	l := uint64(0)
-	for _, field := range t.fields {
+	for _, field := range t.Fields {
 		if fMax := field.Offset + field.Len; fMax > l {
 			l = fMax
 		}
@@ -38,8 +38,4 @@ func (t *Template) minLen() uint64 {
 
 func (t *Template) Equal(other *Template) bool {
 	return reflect.DeepEqual(t, other) || reflect.DeepEqual(*t, *other)
-}
-
-func (t *Template) Size() int {
-	return t.size
 }
