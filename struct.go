@@ -2,7 +2,6 @@ package bmstruct
 
 import (
 	"fmt"
-	"sort"
 	"unsafe"
 )
 
@@ -74,53 +73,57 @@ func (s *Struct) Update(fieldName string, value Value) {
 }
 
 type Structs struct {
-	Structs map[uint64]*Struct
-	Data    []byte
+	*Template
+	Data []byte
 }
 
 func (t *Template) Slice(data []byte) *Structs {
 	if len(data)%t.Size != 0 {
 		panic("data bytes does not align")
 	}
-	// structs := make(map[uint64]*Struct)
 	structs := &Structs{
-		Structs: make(map[uint64]*Struct),
-		Data:    data,
-	}
-	for offset := uint64(0); offset < uint64(len(data)); offset += uint64(t.Size) {
-		structs.Structs[offset] = t.New(data[offset : offset+uint64(t.Size)])
+		Template: t,
+		Data:     data,
 	}
 	return structs
 }
 
 func (ss *Structs) Count() uint32 {
-	return uint32(len(ss.Structs))
+	return uint32(len(ss.Data) / ss.Template.Size)
 }
 
 func (ss *Structs) At(offset uint64) *Struct {
-	return ss.Structs[offset]
+	if offset%uint64(ss.Template.Size) != 0 {
+		return nil
+	}
+	return ss.Template.New(ss.Data[offset : offset+uint64(ss.Template.Size)])
+}
+
+func (ss *Structs) Nth(n int) *Struct {
+	offset := uint64(n * ss.Template.Size)
+	if offset+uint64(ss.Template.Size) > uint64(len(ss.Data)) {
+		panic("index out of bounds")
+	}
+	return ss.Template.New(ss.Data[offset : offset+uint64(ss.Template.Size)])
 }
 
 func (ss *Structs) Update(offset uint64, s *Struct) {
-	oldS, found := ss.Structs[offset]
-	if !found {
-		panic("invalid offset, no instruction found")
+	if offset%uint64(ss.Template.Size) != 0 {
+		panic("invalid offset, no struct found")
 	}
-	if !oldS.Template.Equal(s.Template) {
+	if !ss.Template.Equal(s.Template) {
 		panic("structs cannot be updated with different kind of struct")
 	}
-	copy(oldS.Data, s.Data)
+	copy(ss.Data[offset:offset+(uint64(ss.Template.Size))], s.Data)
 }
 
 func (ss *Structs) Clone() *Structs {
 	clone := &Structs{
-		Structs: make(map[uint64]*Struct),
-		Data:    make([]byte, len(ss.Data)),
+		// Structs: make(map[uint64]*Struct),
+		Data:     make([]byte, len(ss.Data)),
+		Template: ss.Template,
 	}
 	copy(clone.Data, ss.Data)
-	for offset, s := range ss.Structs {
-		clone.Structs[offset] = s.Template.New(clone.Data[offset : offset+uint64(s.Template.Size)])
-	}
 	return clone
 }
 
@@ -132,28 +135,12 @@ func (ss *Structs) Uintptr() uintptr {
 	return uintptr(ss.Pointer())
 }
 
-type UInt64Slice []uint64
-
-func (s UInt64Slice) Len() int {
-	return len(s)
-}
-
-func (s UInt64Slice) Less(i, j int) bool {
-	return s[i] < s[j]
-
-}
-
-func (s UInt64Slice) Swap(i, j int) {
-	s[i], s[j] = s[j], s[i]
-}
-
 func (ss *Structs) Offsets() []uint64 {
 	offsets := make([]uint64, ss.Count())
 	i := 0
-	for offset := range ss.Structs {
+	for offset := uint64(0); offset < uint64(len(ss.Data)); offset += uint64(ss.Template.Size) {
 		offsets[i] = offset
 		i++
 	}
-	sort.Sort(UInt64Slice(offsets))
 	return offsets
 }
