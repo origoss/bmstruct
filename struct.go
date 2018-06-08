@@ -35,10 +35,6 @@ func (s *Struct) Uintptr() uintptr {
 	return uintptr(s.Pointer())
 }
 
-// func (s *Struct) Data() []byte {
-// 	return s.data
-// }
-
 func (s *Struct) Clone() *Struct {
 	clone := &Struct{
 		Template: s.Template,
@@ -119,7 +115,6 @@ func (ss *Structs) Update(offset uint64, s *Struct) {
 
 func (ss *Structs) Clone() *Structs {
 	clone := &Structs{
-		// Structs: make(map[uint64]*Struct),
 		Data:     make([]byte, len(ss.Data)),
 		Template: ss.Template,
 	}
