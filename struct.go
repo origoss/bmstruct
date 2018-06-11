@@ -42,6 +42,10 @@ func (t *Template) Empty() *Struct {
 	}
 }
 
+func (s *Struct) Value() Value {
+	return Value(s.Data)
+}
+
 func (s *Struct) Pointer() unsafe.Pointer {
 	return unsafe.Pointer(&s.Data[0])
 }
@@ -71,7 +75,8 @@ func (s *Struct) Lookup(fieldName string) Value {
 	return field.copySlice(s.Data)
 }
 
-func (s *Struct) Update(fieldName string, value Value) {
+func (s *Struct) Update(fieldName string, valuable Valuable) {
+	value := valuable.Value()
 	field, found := s.Template.Fields[fieldName]
 	if !found {
 		panic(fmt.Sprintf("field name %s not found in template", fieldName))
@@ -153,4 +158,8 @@ func (ss *Structs) Offsets() []uint64 {
 		i++
 	}
 	return offsets
+}
+
+func (ss *Structs) Value() Value {
+	return Value(ss.Data)
 }

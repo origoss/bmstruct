@@ -76,13 +76,13 @@ var _ = Describe("Struct", func() {
 				})
 				It("shall generate a clone with independent data", func() {
 					Expect(func() []byte {
-						clone.At(0).Update("field1", []byte{
+						clone.At(0).Update("field1", Value{
 							42, 42, 42, 42,
 							42, 42, 42, 42})
 						return sliceData
 					}()).NotTo(ContainElement(byte(42)))
 					Expect(func() []byte {
-						clone.At(0).Update("field1", []byte{
+						clone.At(0).Update("field1", Value{
 							42, 42, 42, 42,
 							42, 42, 42, 42})
 						return clone.Data
