@@ -33,28 +33,28 @@ var _ = Describe("Field", func() {
 	Describe("copySlice", func() {
 		Context("for a regular Field", func() {
 			It("should return the expected value", func() {
-				Expect(f.copySlice(data)).To(Equal([]byte{
+				Expect(f.copySlice(data)).To(Equal(Value{
 					4, 5, 6, 7, 8, 9, 10, 11,
 				}))
 			})
 			It("should return a copy of the value", func() {
 				v := f.copySlice(data)
 				data[6] = 42
-				Expect(v).To(Equal([]byte{
+				Expect(v).To(Equal(Value{
 					4, 5, 6, 7, 8, 9, 10, 11,
 				}))
 			})
 		})
 		Context("for a bitfield", func() {
 			It("should return the expected value", func() {
-				Expect(bf.copySlice(data)).To(Equal([]byte{
+				Expect(bf.copySlice(data)).To(Equal(Value{
 					1,
 				}))
 			})
 			It("should return a copy of the value", func() {
 				v := bf.copySlice(data)
 				data[3] = 255
-				Expect(v).To(Equal([]byte{
+				Expect(v).To(Equal(Value{
 					1,
 				}))
 			})

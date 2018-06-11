@@ -62,7 +62,7 @@ func (f *Field) slice(data []byte) []byte {
 	return data[f.Offset : f.Offset+f.Len]
 }
 
-func (f *Field) copySlice(data []byte) []byte {
+func (f *Field) copySlice(data []byte) Value {
 	if f.BitFieldLen != 0 {
 		return []byte{
 			bitFieldOfByte(data[f.Offset],
@@ -74,7 +74,8 @@ func (f *Field) copySlice(data []byte) []byte {
 	return b
 }
 
-func (f *Field) updateSlice(data []byte, value Value) {
+func (f *Field) updateSlice(data []byte, valuable Valuable) {
+	value := valuable.Value()
 	if f.BitFieldLen != 0 {
 		if len(value) != 1 {
 			panic("BitField value shall contain a single byte only")
