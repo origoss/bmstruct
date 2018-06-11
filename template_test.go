@@ -91,7 +91,7 @@ var _ = Describe("Template", func() {
 			t = NewTemplate(20)
 		})
 		It("should be report its size correctly", func() {
-			Expect(t.Size()).To(Equal(20))
+			Expect(t.Size).To(Equal(20))
 		})
 	})
 })

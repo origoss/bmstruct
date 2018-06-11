@@ -5,12 +5,11 @@ import (
 )
 
 type Field struct {
-	Name   string
-	Offset uint64
-	Len    uint64
-	// Type           reflect.Type
-	BitFieldOffset uint8
-	BitFieldLen    uint8
+	Name           string `json:"name"`
+	Offset         uint64 `json:"offset"`
+	Len            uint64 `json:"length"`
+	BitFieldOffset uint8  `json:"bf-offset,omitempty"`
+	BitFieldLen    uint8  `json:"bf-len,omitempty"`
 }
 
 func newField(t reflect.Type, name string, offset uint64) *Field {

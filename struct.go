@@ -1,13 +1,28 @@
 package bmstruct
 
 import (
+	// "encoding/base64"
 	"fmt"
 	"unsafe"
 )
 
+// type binary []byte
+
+// func (b binary) MarshalText() (text []byte, err error) {
+// 	dst := make([]byte, base64.StdEncoding.EncodedLen(len(b)))
+// 	base64.StdEncoding.Encode(dst, b)
+// 	return dst, nil
+// }
+
+// func (b binary) UnmarshalText(text []byte) error {
+// 	b = make([]byte, base64.StdEncoding.DecodedLen(len(text)))
+// 	base64.StdEncoding.Decode(b, text)
+// 	return nil
+// }
+
 type Struct struct {
-	*Template
-	Data []byte
+	*Template `json:"template"`
+	Data      []byte `json:"data"`
 }
 
 func (t *Template) New(data []byte) *Struct {

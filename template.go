@@ -5,8 +5,8 @@ import (
 )
 
 type Template struct {
-	Fields map[string]*Field
-	Size   int
+	Fields map[string]*Field `json:"fields"`
+	Size   int               `json:"size"`
 }
 
 func NewTemplate(size int, fields ...*Field) *Template {

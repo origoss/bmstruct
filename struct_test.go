@@ -44,17 +44,8 @@ var _ = Describe("Struct", func() {
 					0, 20, 40, 60,
 				}))
 			})
-			It("should return correct number of structs", func() {
-				Expect(len(ss.structs)).To(Equal(4))
-			})
 			It("should report correct number of structs with Count", func() {
 				Expect(ss.Count()).To(Equal(uint32(4)))
-			})
-			It("shall contain structs pointing to the correct place", func() {
-				Expect(&ss.structs[0].data[0]).To(Equal(&sliceData[0]))
-				Expect(&ss.structs[20].data[0]).To(Equal(&sliceData[20]))
-				Expect(&ss.structs[40].data[0]).To(Equal(&sliceData[40]))
-				Expect(&ss.structs[60].data[0]).To(Equal(&sliceData[60]))
 			})
 			Describe("the At method call", func() {
 				Context("with proper offsets", func() {
@@ -94,14 +85,8 @@ var _ = Describe("Struct", func() {
 						clone.At(0).Update("field1", []byte{
 							42, 42, 42, 42,
 							42, 42, 42, 42})
-						return clone.data
+						return clone.Data
 					}()).To(ContainElement(byte(42)))
-				})
-				It("shall generate a clone that contains structs pointing to the correct place", func() {
-					Expect(&clone.structs[0].data[0]).To(Equal(&clone.data[0]))
-					Expect(&clone.structs[20].data[0]).To(Equal(&clone.data[20]))
-					Expect(&clone.structs[40].data[0]).To(Equal(&clone.data[40]))
-					Expect(&clone.structs[60].data[0]).To(Equal(&clone.data[60]))
 				})
 			})
 			Describe("when updated", func() {
@@ -182,7 +167,7 @@ var _ = Describe("Struct", func() {
 		})
 		Describe("Data method", func() {
 			It("should return the stored data", func() {
-				Expect(s.Data()).To(Equal(data))
+				Expect(s.Data).To(Equal(data))
 			})
 		})
 		Describe("Clone method", func() {
@@ -195,13 +180,13 @@ var _ = Describe("Struct", func() {
 				Expect(s.Template.Equal(clone.Template)).To(BeTrue())
 			})
 			It("should create a struct with the same data", func() {
-				Expect(s.data).To(Equal(clone.data))
+				Expect(s.Data).To(Equal(clone.Data))
 			})
 			It("should create a struct with cloned data", func() {
-				s.data[0] = 0
-				clone.data[0] = 42
-				Expect(s.data[0]).To(Equal(byte(0)))
-				Expect(clone.data[0]).To(Equal(byte(42)))
+				s.Data[0] = 0
+				clone.Data[0] = 42
+				Expect(s.Data[0]).To(Equal(byte(0)))
+				Expect(clone.Data[0]).To(Equal(byte(42)))
 			})
 		})
 		Describe("Lookup operation", func() {

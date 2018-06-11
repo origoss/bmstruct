@@ -48,6 +48,18 @@ func PtrToBytes(v []byte) Value {
 	return Pointer(unsafe.Pointer(&v[0]))
 }
 
+func ZeroTermString(s string) Value {
+	b := make([]byte, len(s)+1)
+	copy(b, []byte(s))
+	return b
+}
+
+func (v Value) Clone() Value {
+	clone := make([]byte, len(v))
+	copy(clone, v)
+	return clone
+}
+
 // TODO: Pointer naming is not symmetrical
 func (v Value) Pointer() unsafe.Pointer {
 	return unsafe.Pointer(&v[0])
@@ -111,4 +123,8 @@ func (v Value) Uint64() uint64 {
 		i |= uint64(v[n]) << uint(n*8)
 	}
 	return i
+}
+
+func (v Value) ZeroTermString() string {
+	return string(v[0 : len(v)-1])
 }
