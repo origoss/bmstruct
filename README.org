@@ -1,0 +1,71 @@
+#+OPTIONS: ':nil *:t -:t ::t <:t H:3 \n:nil ^:t arch:headline author:t
+#+OPTIONS: broken-links:nil c:nil creator:nil d:(not "LOGBOOK") date:t e:t
+#+OPTIONS: email:nil f:t inline:t num:t p:nil pri:nil prop:nil stat:t tags:t
+#+OPTIONS: tasks:t tex:t timestamp:t title:t toc:t todo:t |:t
+#+TITLE: bmstruct README
+#+DATE: <2018-06-12 k>
+#+AUTHOR: Gergely Szabo
+#+EMAIL: gergely.szabo@origoss.com
+#+LANGUAGE: en
+#+SELECT_TAGS: export
+#+EXCLUDE_TAGS: noexport
+#+CREATOR: Emacs 25.2.2 (Org mode 9.1.13)
+
+Package ~bmstruct~ provides structures and methods to manage byte slices with
+embedded values.
+
+The following byte slice of 8 bytes contains an uint16 (2 bytes) starting at the
+offset 3:
+
+#+BEGIN_EXAMPLE
+  0:  01000001
+  1:  00010000
+  2:  01000111
+  3: |01001001|
+  4: |10010101|
+  5:  01011001
+  6:  01010011
+  7:  00110101
+#+END_EXAMPLE
+
+With the package ~bmstruct~, this data structure can be managed easily. First,
+let's create a ~bmstruct.Template~ that describes the location of the uint16
+value inside the byte slice:
+
+#+BEGIN_SRC go
+  t := NewTemplate(8, Uint16Field("value"), 3)
+#+END_SRC
+
+This template can be applied on any byte slice with length of 8. The result is a
+~bmstruct.Struct~.
+
+#+BEGIN_SRC go
+  b := make([]byte, 8)
+  s := t.New(b)
+#+END_SRC
+
+~bmstruct.Struct~ can be easily manipulated with the ~Lookup~ and ~Update~ methods:
+
+#+BEGIN_SRC go
+  v := s.Lookup("value") // returns bmstruct.Value
+  fmt.Println("v: ", v.Uint16()) // shall print v: 0
+#+END_SRC
+
+The ~Update~ method can be used for changing the byte slice behind the ~Struct~.
+
+#+BEGIN_SRC go
+  s.Update("value", Uint16(42))
+#+END_SRC
+
+The byte slice will look like this:
+
+#+BEGIN_EXAMPLE
+  0:  00000000
+  1:  00000000
+  2:  00000000
+  3: |00101010|
+  4: |00000000|
+  5:  00000000
+  6:  00000000
+  7:  00000000
+#+END_EXAMPLE
