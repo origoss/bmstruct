@@ -35,15 +35,13 @@ var _ = Describe("Convert", func() {
 		})
 		Context("when setting a single bit to 1", func() {
 			It("should return the correct value", func() {
-				Expect(func() []byte {
-					bs := make([]byte, 8)
-					for i := range bs {
-						bClone := b
-						setBitFieldOfByte(&bClone, uint8(i), 1, 1)
-						bs[i] = bClone
-					}
-					return bs
-				}()).To(Equal([]byte{
+				bs := make([]byte, 8)
+				for i := range bs {
+					bClone := b
+					setBitFieldOfByte(&bClone, uint8(i), 1, 1)
+					bs[i] = bClone
+				}
+				Expect(bs).To(Equal([]byte{
 					0xAB, // 0b10101011
 					0xAA, // 0b10101010
 					0xAE, // 0b10101110
@@ -57,15 +55,13 @@ var _ = Describe("Convert", func() {
 		})
 		Context("when setting a single bit to 0", func() {
 			It("should return the correct value", func() {
-				Expect(func() []byte {
-					bs := make([]byte, 8)
-					for i := range bs {
-						bClone := b
-						setBitFieldOfByte(&bClone, uint8(i), 1, 0)
-						bs[i] = bClone
-					}
-					return bs
-				}()).To(Equal([]byte{
+				bs := make([]byte, 8)
+				for i := range bs {
+					bClone := b
+					setBitFieldOfByte(&bClone, uint8(i), 1, 0)
+					bs[i] = bClone
+				}
+				Expect(bs).To(Equal([]byte{
 					0xAA, // 0b10101010
 					0xA8, // 0b10101000
 					0xAA, // 0b10101010
@@ -79,15 +75,13 @@ var _ = Describe("Convert", func() {
 		})
 		Context("when setting bits to 11", func() {
 			It("should return the correct value", func() {
-				Expect(func() []byte {
-					bs := make([]byte, 7)
-					for i := range bs {
-						bClone := b
-						setBitFieldOfByte(&bClone, uint8(i), 2, 3)
-						bs[i] = bClone
-					}
-					return bs
-				}()).To(Equal([]byte{
+				bs := make([]byte, 7)
+				for i := range bs {
+					bClone := b
+					setBitFieldOfByte(&bClone, uint8(i), 2, 3)
+					bs[i] = bClone
+				}
+				Expect(bs).To(Equal([]byte{
 					0xAB, // 0b10101011
 					0xAE, // 0b10101110
 					0xAE, // 0b10101110
@@ -100,15 +94,13 @@ var _ = Describe("Convert", func() {
 		})
 		Context("when setting bits to 01", func() {
 			It("should return the correct value", func() {
-				Expect(func() []byte {
-					bs := make([]byte, 7)
-					for i := range bs {
-						bClone := b
-						setBitFieldOfByte(&bClone, uint8(i), 2, 1)
-						bs[i] = bClone
-					}
-					return bs
-				}()).To(Equal([]byte{
+				bs := make([]byte, 7)
+				for i := range bs {
+					bClone := b
+					setBitFieldOfByte(&bClone, uint8(i), 2, 1)
+					bs[i] = bClone
+				}
+				Expect(bs).To(Equal([]byte{
 					0xA9, // 0b10101001
 					0xAA, // 0b10101010
 					0xA6, // 0b10100110
@@ -150,26 +142,22 @@ var _ = Describe("Convert", func() {
 		})
 		Context("when length = 1", func() {
 			It("should return correct values", func() {
-				Expect(func() []byte {
-					bs := make([]byte, 8)
-					for i := range bs {
-						bs[i] = bitFieldOfByte(b, uint8(i), 1)
-					}
-					return bs
-				}()).To(Equal([]byte{
+				bs := make([]byte, 8)
+				for i := range bs {
+					bs[i] = bitFieldOfByte(b, uint8(i), 1)
+				}
+				Expect(bs).To(Equal([]byte{
 					0, 1, 0, 1, 0, 0, 1, 1,
 				}))
 			})
 		})
 		Context("when length = 2", func() {
 			It("should return correct values", func() {
-				Expect(func() []byte {
-					bs := make([]byte, 7)
-					for i := range bs {
-						bs[i] = bitFieldOfByte(b, uint8(i), 2)
-					}
-					return bs
-				}()).To(Equal([]byte{
+				bs := make([]byte, 7)
+				for i := range bs {
+					bs[i] = bitFieldOfByte(b, uint8(i), 2)
+				}
+				Expect(bs).To(Equal([]byte{
 					// 10, 01, 10, 01, 00, 10, 11
 					2, 1, 2, 1, 0, 2, 3,
 				}))
@@ -177,13 +165,11 @@ var _ = Describe("Convert", func() {
 		})
 		Context("when length = 3", func() {
 			It("should return correct values", func() {
-				Expect(func() []byte {
-					bs := make([]byte, 6)
-					for i := range bs {
-						bs[i] = bitFieldOfByte(b, uint8(i), 3)
-					}
-					return bs
-				}()).To(Equal([]byte{
+				bs := make([]byte, 6)
+				for i := range bs {
+					bs[i] = bitFieldOfByte(b, uint8(i), 3)
+				}
+				Expect(bs).To(Equal([]byte{
 					// 010, 101, 010, 001, 100, 110
 					2, 5, 2, 1, 4, 6,
 				}))
@@ -191,13 +177,11 @@ var _ = Describe("Convert", func() {
 		})
 		Context("when length = 8", func() {
 			It("should return correct values", func() {
-				Expect(func() []byte {
-					bs := make([]byte, 1)
-					for i := range bs {
-						bs[i] = bitFieldOfByte(b, uint8(i), 8)
-					}
-					return bs
-				}()).To(Equal([]byte{
+				bs := make([]byte, 1)
+				for i := range bs {
+					bs[i] = bitFieldOfByte(b, uint8(i), 8)
+				}
+				Expect(bs).To(Equal([]byte{
 					// 0b11001010 = 0xCA
 					0xCA,
 				}))
@@ -219,13 +203,11 @@ var _ = Describe("Convert", func() {
 				v = 0x0123456789ABCDEF
 			})
 			It("shall return the correct values for n = 0-7", func() {
-				Expect(func() []byte {
-					b := make([]byte, 8)
-					for i := range b {
-						b[i] = nthByteOfInt(v, i)
-					}
-					return b
-				}()).To(Equal([]byte{
+				b := make([]byte, 8)
+				for i := range b {
+					b[i] = nthByteOfInt(v, i)
+				}
+				Expect(b).To(Equal([]byte{
 					0xEF, 0xCD, 0xAB, 0x89,
 					0x67, 0x45, 0x23, 0x01,
 				}))
@@ -248,13 +230,11 @@ var _ = Describe("Convert", func() {
 				v = -0x0123456789ABCDEF
 			})
 			It("shall return the correct values for n = 0-7", func() {
-				Expect(func() []byte {
-					b := make([]byte, 8)
-					for i := range b {
-						b[i] = nthByteOfInt(v, i)
-					}
-					return b
-				}()).To(Equal([]byte{
+				b := make([]byte, 8)
+				for i := range b {
+					b[i] = nthByteOfInt(v, i)
+				}
+				Expect(b).To(Equal([]byte{
 					0x11, 0x32, 0x54, 0x76,
 					0x98, 0xBA, 0xDC, 0xFE,
 				}))
@@ -277,13 +257,11 @@ var _ = Describe("Convert", func() {
 				v = 0x0123456789ABCDEF
 			})
 			It("shall return the correct values for n = 0-7", func() {
-				Expect(func() []byte {
-					b := make([]byte, 8)
-					for i := range b {
-						b[i] = nthByteOfInt(v, i)
-					}
-					return b
-				}()).To(Equal([]byte{
+				b := make([]byte, 8)
+				for i := range b {
+					b[i] = nthByteOfInt(v, i)
+				}
+				Expect(b).To(Equal([]byte{
 					0xEF, 0xCD, 0xAB, 0x89,
 					0x67, 0x45, 0x23, 0x01,
 				}))
@@ -306,13 +284,11 @@ var _ = Describe("Convert", func() {
 				v = 0x01
 			})
 			It("shall return the correct values for n = 0", func() {
-				Expect(func() []byte {
-					b := make([]byte, 1)
-					for i := range b {
-						b[i] = nthByteOfInt(v, i)
-					}
-					return b
-				}()).To(Equal([]byte{
+				b := make([]byte, 1)
+				for i := range b {
+					b[i] = nthByteOfInt(v, i)
+				}
+				Expect(b).To(Equal([]byte{
 					0x01,
 				}))
 			})
@@ -334,13 +310,11 @@ var _ = Describe("Convert", func() {
 				v = -0x01
 			})
 			It("shall return the correct values for n = 0", func() {
-				Expect(func() []byte {
-					b := make([]byte, 1)
-					for i := range b {
-						b[i] = nthByteOfInt(v, i)
-					}
-					return b
-				}()).To(Equal([]byte{
+				b := make([]byte, 1)
+				for i := range b {
+					b[i] = nthByteOfInt(v, i)
+				}
+				Expect(b).To(Equal([]byte{
 					0xFF,
 				}))
 			})
@@ -362,13 +336,11 @@ var _ = Describe("Convert", func() {
 				v = 0x01
 			})
 			It("shall return the correct values for n = 0", func() {
-				Expect(func() []byte {
-					b := make([]byte, 1)
-					for i := range b {
-						b[i] = nthByteOfInt(v, i)
-					}
-					return b
-				}()).To(Equal([]byte{
+				b := make([]byte, 1)
+				for i := range b {
+					b[i] = nthByteOfInt(v, i)
+				}
+				Expect(b).To(Equal([]byte{
 					0x01,
 				}))
 			})
@@ -390,13 +362,11 @@ var _ = Describe("Convert", func() {
 				v = 0x0123
 			})
 			It("shall return the correct values for n = 0-1", func() {
-				Expect(func() []byte {
-					b := make([]byte, 2)
-					for i := range b {
-						b[i] = nthByteOfInt(v, i)
-					}
-					return b
-				}()).To(Equal([]byte{
+				b := make([]byte, 2)
+				for i := range b {
+					b[i] = nthByteOfInt(v, i)
+				}
+				Expect(b).To(Equal([]byte{
 					0x23, 0x01,
 				}))
 			})
@@ -418,13 +388,11 @@ var _ = Describe("Convert", func() {
 				v = -0x0123
 			})
 			It("shall return the correct values for n = 0-1", func() {
-				Expect(func() []byte {
-					b := make([]byte, 2)
-					for i := range b {
-						b[i] = nthByteOfInt(v, i)
-					}
-					return b
-				}()).To(Equal([]byte{
+				b := make([]byte, 2)
+				for i := range b {
+					b[i] = nthByteOfInt(v, i)
+				}
+				Expect(b).To(Equal([]byte{
 					0xDD, 0xFE,
 				}))
 			})
@@ -446,13 +414,11 @@ var _ = Describe("Convert", func() {
 				v = 0x0123
 			})
 			It("shall return the correct values for n = 0-1", func() {
-				Expect(func() []byte {
-					b := make([]byte, 2)
-					for i := range b {
-						b[i] = nthByteOfInt(v, i)
-					}
-					return b
-				}()).To(Equal([]byte{
+				b := make([]byte, 2)
+				for i := range b {
+					b[i] = nthByteOfInt(v, i)
+				}
+				Expect(b).To(Equal([]byte{
 					0x23, 0x01,
 				}))
 			})
@@ -474,13 +440,11 @@ var _ = Describe("Convert", func() {
 				v = 0x01234567
 			})
 			It("shall return the correct values for n = 0-3", func() {
-				Expect(func() []byte {
-					b := make([]byte, 4)
-					for i := range b {
-						b[i] = nthByteOfInt(v, i)
-					}
-					return b
-				}()).To(Equal([]byte{
+				b := make([]byte, 4)
+				for i := range b {
+					b[i] = nthByteOfInt(v, i)
+				}
+				Expect(b).To(Equal([]byte{
 					0x67, 0x45, 0x23, 0x01,
 				}))
 			})
@@ -502,13 +466,11 @@ var _ = Describe("Convert", func() {
 				v = -0x01234567
 			})
 			It("shall return the correct values for n = 0-3", func() {
-				Expect(func() []byte {
-					b := make([]byte, 4)
-					for i := range b {
-						b[i] = nthByteOfInt(v, i)
-					}
-					return b
-				}()).To(Equal([]byte{
+				b := make([]byte, 4)
+				for i := range b {
+					b[i] = nthByteOfInt(v, i)
+				}
+				Expect(b).To(Equal([]byte{
 					0x99, 0xBA, 0xDC, 0xFE,
 				}))
 			})
@@ -530,13 +492,11 @@ var _ = Describe("Convert", func() {
 				v = 0x01234567
 			})
 			It("shall return the correct values for n = 0-3", func() {
-				Expect(func() []byte {
-					b := make([]byte, 4)
-					for i := range b {
-						b[i] = nthByteOfInt(v, i)
-					}
-					return b
-				}()).To(Equal([]byte{
+				b := make([]byte, 4)
+				for i := range b {
+					b[i] = nthByteOfInt(v, i)
+				}
+				Expect(b).To(Equal([]byte{
 					0x67, 0x45, 0x23, 0x01,
 				}))
 			})
@@ -558,13 +518,11 @@ var _ = Describe("Convert", func() {
 				v = 0x0123456789ABCDEF
 			})
 			It("shall return the correct values for n = 0-7", func() {
-				Expect(func() []byte {
-					b := make([]byte, 8)
-					for i := range b {
-						b[i] = nthByteOfInt(v, i)
-					}
-					return b
-				}()).To(Equal([]byte{
+				b := make([]byte, 8)
+				for i := range b {
+					b[i] = nthByteOfInt(v, i)
+				}
+				Expect(b).To(Equal([]byte{
 					0xEF, 0xCD, 0xAB, 0x89,
 					0x67, 0x45, 0x23, 0x01,
 				}))
@@ -587,13 +545,11 @@ var _ = Describe("Convert", func() {
 				v = -0x0123456789ABCDEF
 			})
 			It("shall return the correct values for n = 0-7", func() {
-				Expect(func() []byte {
-					b := make([]byte, 8)
-					for i := range b {
-						b[i] = nthByteOfInt(v, i)
-					}
-					return b
-				}()).To(Equal([]byte{
+				b := make([]byte, 8)
+				for i := range b {
+					b[i] = nthByteOfInt(v, i)
+				}
+				Expect(b).To(Equal([]byte{
 					0x11, 0x32, 0x54, 0x76,
 					0x98, 0xBA, 0xDC, 0xFE,
 				}))
@@ -616,13 +572,11 @@ var _ = Describe("Convert", func() {
 				v = 0x0123456789ABCDEF
 			})
 			It("shall return the correct values for n = 0-7", func() {
-				Expect(func() []byte {
-					b := make([]byte, 8)
-					for i := range b {
-						b[i] = nthByteOfInt(v, i)
-					}
-					return b
-				}()).To(Equal([]byte{
+				b := make([]byte, 8)
+				for i := range b {
+					b[i] = nthByteOfInt(v, i)
+				}
+				Expect(b).To(Equal([]byte{
 					0xEF, 0xCD, 0xAB, 0x89,
 					0x67, 0x45, 0x23, 0x01,
 				}))
@@ -645,13 +599,11 @@ var _ = Describe("Convert", func() {
 				v = 0x0123456789ABCDEF
 			})
 			It("shall return the correct values for n = 0-7", func() {
-				Expect(func() []byte {
-					b := make([]byte, 8)
-					for i := range b {
-						b[i] = nthByteOfInt(v, i)
-					}
-					return b
-				}()).To(Equal([]byte{
+				b := make([]byte, 8)
+				for i := range b {
+					b[i] = nthByteOfInt(v, i)
+				}
+				Expect(b).To(Equal([]byte{
 					0xEF, 0xCD, 0xAB, 0x89,
 					0x67, 0x45, 0x23, 0x01,
 				}))
@@ -668,5 +620,4 @@ var _ = Describe("Convert", func() {
 			})
 		})
 	})
-
 })

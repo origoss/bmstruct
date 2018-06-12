@@ -7,7 +7,7 @@ import (
 
 var _ = Describe("Template", func() {
 	Describe("Creating template", func() {
-		Context("with 0 size", func() {
+		Context("with no fields", func() {
 			It("should panic", func() {
 				Expect(func() {
 					NewTemplate(0)
@@ -15,18 +15,15 @@ var _ = Describe("Template", func() {
 			})
 		})
 		Context("with negative size", func() {
-			It("should panic", func() {
-				Expect(func() {
-					NewTemplate(-42)
-				}).To(Panic())
+			It("should calculate the size from the fields", func() {
+				t := NewTemplate(-1,
+					IntField("f1", 0),
+					IntField("f2", 8),
+				)
+				Expect(t.Size).To(Equal(16))
 			})
 		})
-		Context("without fields", func() {
-			It("shall have minLen() = 0", func() {
-				Expect(NewTemplate(42).minLen()).To(BeZero())
-			})
-		})
-		Describe("with a field", func() {
+		Describe("with a single field", func() {
 			Context("and too small size", func() {
 				It("should panic", func() {
 					Expect(func() {
@@ -84,14 +81,26 @@ var _ = Describe("Template", func() {
 			})
 		})
 	})
-	Describe("after created", func() {
-		var t *Template
-
-		BeforeEach(func() {
-			t = NewTemplate(20)
-		})
-		It("should be report its size correctly", func() {
-			Expect(t.Size).To(Equal(20))
-		})
-	})
 })
+
+func ExampleNewTemplate() {
+	NewTemplate(40,
+		IntField("ID", 0),
+		IntField("Age", 8),
+	)
+}
+
+func ExampleTemplate_Field() {
+	//grades has 2 fields, the size is calculated
+	grades := NewTemplate(-1,
+		Uint8Field("math", 0),
+		Uint8Field("science", 1),
+	)
+
+	//this new template has a field which is the template defined above
+	NewTemplate(40,
+		IntField("id", 0),
+		IntField("age", 8),
+		grades.Field("grades", 16),
+	)
+}

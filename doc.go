@@ -8,8 +8,8 @@ embedded values.
 
 Introduction
 
-For example the following byte slice of 8 bytes contains an uint16 (2 bytes)
-starting at the offset 3:
+The following byte slice of 8 bytes contains an uint16 (2 bytes) starting at the
+offset 3:
 
   0:  01000001
   1:  00010000
