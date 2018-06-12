@@ -9,7 +9,7 @@ import (
 //object implements the Valueable interface, it can be used where Values can be
 //used.
 type Valuable interface {
-	Value() Value
+	GetValue() Value
 }
 
 //Value is a byte slice with extra capabilities. A Value can convert itself into
@@ -18,7 +18,7 @@ type Valuable interface {
 type Value []byte
 
 //Value method of a Value returns itself
-func (v Value) Value() Value {
+func (v Value) GetValue() Value {
 	return v
 }
 func intValue(v interface{}) Value {

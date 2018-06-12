@@ -17,7 +17,7 @@ type Struct struct {
 //The size of the given data shall exactly match the Template size otherwise it
 //will panic.
 func (t *Template) New(data Valuable) *Struct {
-	value := data.Value()
+	value := data.GetValue()
 	if t.Size != len(value) {
 		panic("data bytes does not match the template size")
 	}
@@ -66,7 +66,7 @@ func (s *Struct) Lookup(fieldName string) Value {
 // Update operation will panic for a non-existing field name or incorrect Value
 // size.
 func (s *Struct) Update(fieldName string, valuable Valuable) {
-	value := valuable.Value()
+	value := valuable.GetValue()
 	field, found := s.Template.Fields[fieldName]
 	if !found {
 		panic(fmt.Sprintf("field name %s not found in template", fieldName))
@@ -87,7 +87,7 @@ type Structs struct {
 //Slice method creates a new Structs object. Slice will panic when the length of
 //the given data does not align with the size of the Template.
 func (t *Template) Slice(data Valuable) *Structs {
-	value := data.Value()
+	value := data.GetValue()
 	if len(value)%t.Size != 0 {
 		panic("data bytes does not align")
 	}

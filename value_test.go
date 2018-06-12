@@ -10,7 +10,7 @@ var _ = Describe("Value", func() {
 	Describe("Value if Value", func() {
 		It("should always return itself", func() {
 			v := Value{1, 2, 3, 4}
-			Expect(v.Value()).To(Equal(v))
+			Expect(v.GetValue()).To(Equal(v))
 		})
 	})
 	Describe("Uint8", func() {

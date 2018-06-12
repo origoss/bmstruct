@@ -75,7 +75,7 @@ func (f *Field) copySlice(data []byte) Value {
 }
 
 func (f *Field) updateSlice(data []byte, valuable Valuable) {
-	value := valuable.Value()
+	value := valuable.GetValue()
 	if f.BitFieldLen != 0 {
 		if len(value) != 1 {
 			panic("BitField value shall contain a single byte only")
