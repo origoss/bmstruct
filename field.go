@@ -200,3 +200,12 @@ func IntField(name string, offset uint64) *Field {
 		offset,
 	)
 }
+
+//UintptrField creates a new Field with the given name and offset. Len is
+//calculated to fit an uintptr value.
+func UintptrField(name string, offset uint64) *Field {
+	return newField(reflect.TypeOf(uintptr(0)),
+		name,
+		offset,
+	)
+}
