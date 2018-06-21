@@ -81,6 +81,32 @@ var _ = Describe("Template", func() {
 			})
 		})
 	})
+	Describe("Getting the field at offset", func() {
+		var t *Template
+
+		BeforeEach(func() {
+			t = NewTemplate(40,
+				IntField("f1", 0),
+				IntField("f2", 8),
+			)
+		})
+		Context("when the offset is valid", func() {
+			It("should return the proper fields", func() {
+				Expect(t.FieldAt(0).Name).To(Equal("f1"))
+				Expect(t.FieldAt(8).Name).To(Equal("f2"))
+			})
+		})
+		Context("when the offset is invalid", func() {
+			It("should panic", func() {
+				Expect(func() {
+					t.FieldAt(1)
+				}).To(Panic())
+				Expect(func() {
+					t.FieldAt(10)
+				}).To(Panic())
+			})
+		})
+	})
 })
 
 func ExampleNewTemplate() {

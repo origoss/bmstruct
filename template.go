@@ -70,3 +70,14 @@ func (t *Template) Field(name string, offset uint64) *Field {
 		Len:    uint64(t.Size),
 	}
 }
+
+//FieldAt method returns the Field that is to be found at the given offset. The
+//method panics if the offset is invalid.
+func (t *Template) FieldAt(offset uint64) *Field {
+	for _, f := range t.Fields {
+		if f.Offset == offset {
+			return f
+		}
+	}
+	panic("invalid offset")
+}
