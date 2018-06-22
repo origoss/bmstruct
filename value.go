@@ -18,12 +18,12 @@ type Valuable interface {
 type NilType struct{}
 
 //GetValue implements the Valuable interface for NilType
-func (n *NilType) GetValue() Value {
+func (n NilType) GetValue() Value {
 	panic("Getting Value of Nil type")
 }
 
 //Address implements the Valuable interface for NilType
-func (n *NilType) Address() uintptr {
+func (n NilType) Address() uintptr {
 	return 0
 }
 
