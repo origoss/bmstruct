@@ -31,6 +31,11 @@ func (n NilType) Address() uintptr {
 //GetValue() panics.
 var Nil = NilType{}
 
+//IsNil returns true if and only if v is Nil.
+func IsNil(v Valuable) bool {
+	return v.Address() == uintptr(0)
+}
+
 //Value is a byte slice with extra capabilities. A Value can convert itself into
 //the most common go types (int, []byte, string, etc.) and vice versa the most
 //common go types can be converted easily to Value.

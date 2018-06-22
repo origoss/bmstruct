@@ -17,6 +17,14 @@ var _ = Describe("Value", func() {
 			Expect(Nil.Address()).To(Equal(uintptr(0)))
 		})
 	})
+	Describe("IsNil", func() {
+		It("should return true for Nil", func() {
+			Expect(IsNil(Nil)).To(BeTrue())
+		})
+		It("should return false for other types", func() {
+			Expect(IsNil(Uint16(4234))).NotTo(BeTrue())
+		})
+	})
 	Describe("Value of Value", func() {
 		It("should always return itself", func() {
 			v := Value{1, 2, 3, 4}
