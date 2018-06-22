@@ -10,7 +10,26 @@ import (
 //used.
 type Valuable interface {
 	GetValue() Value
+	Address() uintptr
 }
+
+//NilType is a special type. The Nil object with this type should be used in
+//programs.
+type NilType struct{}
+
+//GetValue implements the Valuable interface for NilType
+func (n *NilType) GetValue() Value {
+	panic("Getting Value of Nil type")
+}
+
+//Address implements the Valuable interface for NilType
+func (n *NilType) Address() uintptr {
+	return 0
+}
+
+//Nil represents a Value for which the Address() method returns 0 and the
+//GetValue() panics.
+var Nil = NilType{}
 
 //Value is a byte slice with extra capabilities. A Value can convert itself into
 //the most common go types (int, []byte, string, etc.) and vice versa the most

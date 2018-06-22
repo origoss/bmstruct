@@ -7,7 +7,17 @@ import (
 )
 
 var _ = Describe("Value", func() {
-	Describe("Value if Value", func() {
+	Describe("Nil type", func() {
+		It("should panic for GetValue()", func() {
+			Expect(func() {
+				Nil.GetValue()
+			}).To(Panic())
+		})
+		It("should return 0 for Address()", func() {
+			Expect(Nil.Address()).To(Equal(uintptr(0)))
+		})
+	})
+	Describe("Value of Value", func() {
 		It("should always return itself", func() {
 			v := Value{1, 2, 3, 4}
 			Expect(v.GetValue()).To(Equal(v))
