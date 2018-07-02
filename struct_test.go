@@ -83,6 +83,22 @@ var _ = Describe("Struct", func() {
 				})
 			})
 		})
+		Describe("the LookupFunc method", func() {
+			Context("for non-existing key", func() {
+				It("should panic", func() {
+					Expect(func() {
+						s.LookupFunc("no-such-field")
+					}).To(Panic())
+				})
+			})
+			Context("for existing key", func() {
+				It("should return a proper lookup function", func() {
+					f1lookup := s.LookupFunc("field1")
+					Expect(f1lookup()).To(Equal(Value([]byte{2, 3, 4, 5, 6, 7, 8, 9})))
+				})
+			})
+		})
+
 		Describe("Update operation", func() {
 			var v Value
 
@@ -125,6 +141,35 @@ var _ = Describe("Struct", func() {
 				})
 			})
 
+		})
+		Describe("the UpdateFunc method", func() {
+			var v Value
+
+			BeforeEach(func() {
+				v = make([]byte, 8)
+				for i := range v {
+					v[i] = byte(i)
+				}
+			})
+
+			Context("for non-existing key", func() {
+				It("should panic", func() {
+					Expect(func() {
+						s.UpdateFunc("no-such-field")
+					}).To(Panic())
+				})
+			})
+			Context("for existing key", func() {
+				It("should return a proper update function", func() {
+					f1update := s.UpdateFunc("field1")
+					f1update(v)
+					Expect(data).To(Equal(Value{
+						0, 1, 0, 1, 2, 3, 4, 5,
+						6, 7, 10, 11, 12, 13, 14, 15,
+						16, 17, 18, 19,
+					}))
+				})
+			})
 		})
 	})
 	Describe("Creating Structs with Slice", func() {

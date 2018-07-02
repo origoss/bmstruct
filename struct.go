@@ -48,8 +48,8 @@ func (s *Struct) Clone() *Struct {
 
 // Lookup method of Struct returns the Value if the field indicated by
 // fieldName. A clone of the field is returned so modifying the returned value
-// does not impact the Struct. For modifying the Struct object use the Update
-// method.
+// does not impact the Struct. For modifying the Struct object use the Update or
+// UpdateFunc method.
 //
 // Lookup operation for a non-existing field name will panic.
 func (s *Struct) Lookup(fieldName string) Value {
@@ -58,6 +58,22 @@ func (s *Struct) Lookup(fieldName string) Value {
 		panic(fmt.Sprintf("field name %s not found in template", fieldName))
 	}
 	return field.copySlice(s.Value)
+}
+
+// LookupFunc method of Struct returns function, which looks up the Value of the
+// field indicated by fieldName. The returned function returns a clone of the
+// field so modifying the returned value does not impact the Struct.
+// For modifying the Struct object use the Update or UpdateFunc method.
+//
+// LookupFunc operation for a non-existing field name will panic.
+func (s *Struct) LookupFunc(fieldName string) func() Value {
+	field, found := s.Template.Fields[fieldName]
+	if !found {
+		panic(fmt.Sprintf("field name %s not found in template", fieldName))
+	}
+	return func() Value {
+		return field.copySlice(s.Value)
+	}
 }
 
 // Update method of Struct changes the field indicated by fieldName to the given
@@ -76,6 +92,26 @@ func (s *Struct) Update(fieldName string, valuable Valuable) {
 			uint64(len(value)), field.Len))
 	}
 	field.updateSlice(s.Value, value)
+}
+
+// UpdateFunc method of Struct returns a function that can be used to modify the
+// field indicated by fieldName.
+//
+// UpdateFunc operation will panic for a non-existing field name and the
+// returned function will panic for incorrect value size.
+func (s *Struct) UpdateFunc(fieldName string) func(valuable Valuable) {
+	field, found := s.Template.Fields[fieldName]
+	if !found {
+		panic(fmt.Sprintf("field name %s not found in template", fieldName))
+	}
+	return func(valuable Valuable) {
+		value := valuable.GetValue()
+		if uint64(len(value)) != field.Len {
+			panic(fmt.Sprintf("new value size (%d bytes) and field length (%d bytes) mismatch",
+				uint64(len(value)), field.Len))
+		}
+		field.updateSlice(s.Value, value)
+	}
 }
 
 //Structs represents an array of Struct objects over a Value.
