@@ -45,6 +45,7 @@ type Value []byte
 func (v Value) GetValue() Value {
 	return v
 }
+
 func intValue(v interface{}) Value {
 	t := reflect.TypeOf(v)
 	bs := make([]byte, t.Size())

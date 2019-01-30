@@ -134,6 +134,20 @@ func (t *Template) Slice(data Valuable) *Structs {
 	return structs
 }
 
+//SliceE method creates a new Structs object. SliceE will return an error when
+//the length of the given data does not align with the size of the Template.
+func (t *Template) SliceE(data Valuable) (*Structs, error) {
+	value := data.GetValue()
+	if len(value)%t.Size != 0 {
+		return nil, fmt.Errorf("data bytes does not align")
+	}
+	structs := &Structs{
+		Template: t,
+		Value:    value,
+	}
+	return structs, nil
+}
+
 //Count method returns the number of Struct objects in a Structs.
 func (ss *Structs) Count() uint32 {
 	return uint32(len(ss.Value) / ss.Template.Size)
